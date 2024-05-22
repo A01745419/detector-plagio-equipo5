@@ -12,18 +12,15 @@ import re
 
 nltk.download('punkt')
 
-# Primer párrafo
-parrafo1 = """La historia detrás de los orígenes de Batman es casi tan interesante en la vida real como en los cómics. El Hombre Murciélago nace de una idea original de Bob Kane, que tenía poco más que un nombre, y su colaborador habitual Bill Finger, que diseñó tanto el traje como la historia de Bruce Wayne. Un nombre que, por cierto, no es para nada casual."""
-# Primer párrafo parafraseado (plagio)
-parafraseado1 = """La historia del origen de Batman es casi tan interesante en la vida real como lo es en los cómics. Batman nació de la idea original de Bob Kane, que tiene un solo nombre, y su frecuente colaborador Bill Finger, quien diseñó el traje de Batman y la historia de Bruce Wayne. Por cierto, este nombre no es casual."""
+# Leer archivo
+def lectura(nombre_archivo):
+    with open(nombre_archivo, encoding="utf-8") as archivo:
+        info = archivo.read()
+    return info
 
 # Remover puntuación
 def limpieza(texto):
     return re.sub(r'[^\w\s]', '', texto)
-
-# Párrafos sin puntuación
-parrafo_limpio1 = limpieza(parrafo1)
-parrafo_limpio2 = limpieza(parafraseado1)
 
 # Utilización de Stemming para preprocesamiento
 def stemming(oraciones):
@@ -31,10 +28,6 @@ def stemming(oraciones):
     palabras = word_tokenize(oraciones)
     stemmed_tokens = [ps.stem(palabra) for palabra in palabras]
     return ' '.join(stemmed_tokens)
-
-# Parrafos preprocesados
-stemmed_oraciones1 = stemming(parrafo_limpio1)
-stemmed_oraciones2 = stemming(parrafo_limpio2)
 
 # Obtención de vectores por medio de tokenización
 def vectorizacion(tokens1, tokens2, n):
@@ -51,16 +44,29 @@ def calcular_similitud(ngramas):
     similitud = cosine_similarity(ngramas)[0, 1]
     return similitud
 
-# Vectores
-vector_unigrama = vectorizacion(stemmed_oraciones1, stemmed_oraciones2, 1)
-vector_bigrama = vectorizacion(stemmed_oraciones1, stemmed_oraciones2, 2)
-vector_trigrama = vectorizacion(stemmed_oraciones1, stemmed_oraciones2, 3)
+def main():
+    # Primer párrafo
+    parrafo1 = lectura("texto1.txt")
+    # Primer párrafo parafraseado (plagio)
+    parafraseado1 = lectura("texto2.txt")
+    # Párrafos sin puntuación
+    parrafo_limpio1 = limpieza(parrafo1)
+    parrafo_limpio2 = limpieza(parafraseado1)
+    # Parrafos preprocesados
+    stemmed_oraciones1 = stemming(parrafo_limpio1)
+    stemmed_oraciones2 = stemming(parrafo_limpio2)
+    # Vectores
+    vector_unigrama = vectorizacion(stemmed_oraciones1, stemmed_oraciones2, 1)
+    vector_bigrama = vectorizacion(stemmed_oraciones1, stemmed_oraciones2, 2)
+    vector_trigrama = vectorizacion(stemmed_oraciones1, stemmed_oraciones2, 3)
+    # Similitudes
+    similitud_unigrama = calcular_similitud(vector_unigrama)
+    similitud_bigrama = calcular_similitud(vector_bigrama)
+    similitud_trigrama = calcular_similitud(vector_trigrama)
+    # Mostrar similitudes
+    print(f"Porcentaje de similitud por unigrama: {similitud_unigrama * 100} %")
+    print(f"Porcentaje de similitud por bigrama: {similitud_bigrama * 100} %")
+    print(f"Porcentaje de similitud por trigrama: {similitud_trigrama * 100} %")
 
-# Similitudes
-similitud_unigrama = calcular_similitud(vector_unigrama)
-similitud_bigrama = calcular_similitud(vector_bigrama)
-similitud_trigrama = calcular_similitud(vector_trigrama)
-
-print(f"Porcentaje de similitud por unigrama: {similitud_unigrama * 100} %")
-print(f"Porcentaje de similitud por bigrama: {similitud_bigrama * 100} %")
-print(f"Porcentaje de similitud por trigrama: {similitud_trigrama * 100} %")
+if __name__ == '__main__':
+    main()
