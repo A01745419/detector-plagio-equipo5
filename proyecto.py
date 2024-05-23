@@ -9,6 +9,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import re
 import spacy
+import os
 
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -59,41 +60,50 @@ def calcular_similitud(ngramas):
     return similitud
 
 def main():
-    # Primer párrafo
-    parrafo1 = lectura("texto1.txt")
-    # Primer párrafo parafraseado (plagio)
-    parrafo2 = lectura("texto2.txt")
-    # Párrafos sin puntuación
-    parrafo_limpio1 = limpieza(parrafo1)
-    parrafo_limpio2 = limpieza(parrafo2)
-    # Parrafos preprocesados
-    stemmed_oraciones1 = stemming(parrafo_limpio1)
-    stemmed_oraciones2 = stemming(parrafo_limpio2)
-    lematized_oraciones1 = lematizacion(parrafo_limpio1)
-    lematized_oraciones2 = lematizacion(parrafo_limpio2)
-    #print(stemmed_oraciones1)
-    #print(lematized_oraciones1)
-    # Vectores
-    vector_unigrama_stemmed = vectorizacion(stemmed_oraciones1, stemmed_oraciones2, 1)
-    vector_bigrama_stemmed = vectorizacion(stemmed_oraciones1, stemmed_oraciones2, 2)
-    vector_trigrama_stemmed = vectorizacion(stemmed_oraciones1, stemmed_oraciones2, 3)
-    vector_unigrama_lemmatized = vectorizacion(lematized_oraciones1, lematized_oraciones2, 1)
-    vector_bigrama_lemmatized = vectorizacion(lematized_oraciones1, lematized_oraciones2, 2)
-    vector_trigrama_lemmatized = vectorizacion(lematized_oraciones1, lematized_oraciones2, 3)
-    # Similitudes
-    similitud_unigrama_stemmed = calcular_similitud(vector_unigrama_stemmed)
-    similitud_bigrama_stemmed = calcular_similitud(vector_bigrama_stemmed)
-    similitud_trigrama_stemmed = calcular_similitud(vector_trigrama_stemmed)
-    similitud_unigrama_lemmatized = calcular_similitud(vector_unigrama_lemmatized)
-    similitud_bigrama_lemmatized = calcular_similitud(vector_bigrama_lemmatized)
-    similitud_trigrama_lemmatized = calcular_similitud(vector_trigrama_lemmatized)
-    # Mostrar similitudes
-    print(f"Similitud por unigrama stemmed: {similitud_unigrama_stemmed * 100} %")
-    print(f"Similitud por bigrama stemmed: {similitud_bigrama_stemmed * 100} %")
-    print(f"Similitud por trigrama stemmed: {similitud_trigrama_stemmed * 100} %")
-    print(f"Similitud por unigrama lemmatized: {similitud_unigrama_lemmatized * 100} %")
-    print(f"Similitud por bigrama lemmatized: {similitud_bigrama_lemmatized * 100} %")
-    print(f"Similitud por trigrama lemmatized: {similitud_trigrama_lemmatized * 100} %")
+    # Lectura del texto a comprobar su plagio
+    parrafo_plagio = lectura("textoprueba.txt")
+    #limpieza de texto
+    plagio_limpio = limpieza(parrafo_plagio)
+    #preprocesamiento de texto
+    plagio_stemmed = stemming(plagio_limpio)
+    plagio_lemmatized = lematizacion(plagio_limpio)
+
+    # Lectura y preprocesamiento de todos los textos originales para comparar con el texto a comprobar
+    lista_textos = os.listdir("originales")
+    print(lista_textos)
+
+    counter = 1
+    plagio = False
+    print(f'Texto       |  1grama stem  |  2grama stem  |  3grama stem  |  1grama lemm  |  2grama lemm  |  3grama lemm  |  Plagio')
+
+    for texto in lista_textos:
+        parrafo_original = lectura(f"originales/{texto}")
+        original_limpio = limpieza(parrafo_original)
+        original_stemmed = stemming(original_limpio)
+        original_lemmatized = lematizacion(original_limpio)
+        # Vectores
+        vector_unigrama_stemmed = vectorizacion(plagio_stemmed, original_stemmed, 1)
+        vector_bigrama_stemmed = vectorizacion(plagio_stemmed, original_stemmed, 2)
+        vector_trigrama_stemmed = vectorizacion(plagio_stemmed, original_stemmed, 3)
+        vector_unigrama_lemmatized = vectorizacion(plagio_lemmatized, original_lemmatized, 1)
+        vector_bigrama_lemmatized = vectorizacion(plagio_lemmatized, original_lemmatized, 2)
+        vector_trigrama_lemmatized = vectorizacion(plagio_lemmatized, original_lemmatized, 3)
+        # Similitudes
+        similitud_unigrama_stemmed = calcular_similitud(vector_unigrama_stemmed)
+        similitud_bigrama_stemmed = calcular_similitud(vector_bigrama_stemmed)
+        similitud_trigrama_stemmed = calcular_similitud(vector_trigrama_stemmed)
+        similitud_unigrama_lemmatized = calcular_similitud(vector_unigrama_lemmatized)
+        similitud_bigrama_lemmatized = calcular_similitud(vector_bigrama_lemmatized)
+        similitud_trigrama_lemmatized = calcular_similitud(vector_trigrama_lemmatized)
+        # Plagio
+        if similitud_unigrama_lemmatized > 0.8:
+            plagio = True
+        else:
+            plagio = False
+
+        # Mostrar similitudes
+        print(f"{texto}  |    {round(similitud_unigrama_stemmed * 100, 4)}    |    {round(similitud_bigrama_stemmed * 100, 4)}   |    {round(similitud_trigrama_stemmed * 100, 4)}    |    {round(similitud_unigrama_lemmatized * 100, 4)}    |    {round(similitud_bigrama_lemmatized * 100, 4)}    |    {round(similitud_trigrama_lemmatized * 100, 4)}    |    {plagio}")
+        counter += 1
 
 if __name__ == '__main__':
     main()
