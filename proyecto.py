@@ -57,7 +57,16 @@ def vectorizacion(tokens1, tokens2, n):
 # Cálculo de similitud por coseno
 def calcular_similitud(ngramas):
     similitud = cosine_similarity(ngramas)[0, 1]
-    return similitud
+    return round(similitud * 100, 4)
+
+# Determinar si hay plagio
+def generar_reporte(archivo, similitud, similitud2, similitud3, similitud4, similitud5, similitud6):
+    plagio = False
+    if similitud > 80:
+        plagio = True
+    else:
+        plagio = False
+    return (f"{archivo}  |    {similitud}    |    {similitud2}   |    {similitud3}    |    {similitud4}    |    {similitud5}    |    {similitud6}    |    {plagio}")
 
 def main():
     # Lectura del texto a comprobar su plagio
@@ -70,10 +79,7 @@ def main():
 
     # Lectura y preprocesamiento de todos los textos originales para comparar con el texto a comprobar
     lista_textos = os.listdir("originales")
-    print(lista_textos)
 
-    counter = 1
-    plagio = False
     print(f'Texto       |  1grama stem  |  2grama stem  |  3grama stem  |  1grama lemm  |  2grama lemm  |  3grama lemm  |  Plagio')
 
     for texto in lista_textos:
@@ -95,15 +101,9 @@ def main():
         similitud_unigrama_lemmatized = calcular_similitud(vector_unigrama_lemmatized)
         similitud_bigrama_lemmatized = calcular_similitud(vector_bigrama_lemmatized)
         similitud_trigrama_lemmatized = calcular_similitud(vector_trigrama_lemmatized)
-        # Plagio
-        if similitud_unigrama_lemmatized > 0.8:
-            plagio = True
-        else:
-            plagio = False
-
-        # Mostrar similitudes
-        print(f"{texto}  |    {round(similitud_unigrama_stemmed * 100, 4)}    |    {round(similitud_bigrama_stemmed * 100, 4)}   |    {round(similitud_trigrama_stemmed * 100, 4)}    |    {round(similitud_unigrama_lemmatized * 100, 4)}    |    {round(similitud_bigrama_lemmatized * 100, 4)}    |    {round(similitud_trigrama_lemmatized * 100, 4)}    |    {plagio}")
-        counter += 1
+        
+        resultados = generar_reporte(texto, similitud_unigrama_lemmatized, similitud_bigrama_lemmatized, similitud_trigrama_lemmatized, similitud_unigrama_stemmed, similitud_bigrama_stemmed, similitud_trigrama_stemmed)
+        print(resultados)
 
 if __name__ == '__main__':
     main()
