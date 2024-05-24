@@ -109,7 +109,7 @@ def main():
     # Obtener todos los archivos con los cuales comparar
     lista_textos = os.listdir("originales")
     print("")
-    print(f'Texto       |  % Unigrama lematizado | Plagio')
+    print(f'   Texto    |  % Unigrama lematizado | Plagio')
 
     for texto in lista_textos:
         parrafo_original = lectura(f"originales/{texto}")
