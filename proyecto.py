@@ -10,42 +10,63 @@ from sklearn.metrics.pairwise import cosine_similarity
 import re
 import spacy
 import os
+# Se requieren librerias nltk, sklearn, re, spacy
+# Instalar con 'pip install nombre'
+# Igualmente correr en terminal: python -m spacy download es_core_news_sm
 
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 # Cargar modelo en español para lematización (wordnet solo funciona con inglés)
 nlp = spacy.load("es_core_news_sm")
-# correr en terminal: python -m spacy download es_core_news_sm
 
-# Leer archivo
+
 def lectura(nombre_archivo):
+    '''Leer archivo para obtener su texto.
+    @param nombre_archivo: nombre del txt a leer
+    @return info: texto completo del archivo
+    '''
     with open(nombre_archivo, encoding="utf-8") as archivo:
         info = archivo.read()
     return info
 
-# Remover puntuación
+
 def limpieza(texto):
+    '''Remover puntuación de párrafo.
+    @param texto: párrafo a limpiar.
+    @return: párrafo sin puntuacion.
+    '''
     return re.sub(r'[^\w\s]', '', texto)
 
-# Utilización de Stemming para preprocesamiento
+
 def stemming(oraciones):
+    '''Utilización de Stemming para preprocesamiento
+    @param oraciones: oraciones de párrafo limpio.
+    @return: palabras con procesadas con stemming.
+    '''
     ps = PorterStemmer()
     palabras = word_tokenize(oraciones)
     stemmed_tokens = [ps.stem(palabra) for palabra in palabras]
     return ' '.join(stemmed_tokens)
 
-# Utilización de lematización para preprocesamiento
+
 def lematizacion(oraciones):
-    #lm = WordNetLemmatizer()
-    #palabras = word_tokenize(oraciones)
-    #lematized_tokens = [lm.lemmatize(palabra) for palabra in palabras]
+    '''Utilización de lematización para preprocesamiento
+    @param oraciones: oraciones de párrafo limpio.
+    @return: palabras lematizadas.
+    '''
     palabras = nlp(oraciones)
     lematized_tokens = [palabra.lemma_ for palabra in palabras]
     return ' '.join(lematized_tokens)
 
-# Obtención de vectores por medio de tokenización
+
 def vectorizacion(tokens1, tokens2, n):
+    '''Obtención de vectores por medio de tokenización.
+    @param tokens1: palabras procesadas del primer párrafo.
+    @param tokens2: palabras procesadas del segundo párrafo.
+    @param n: cantidad de n gramas a usar.
+    @return ngramas: vector comparado con corpus.
+    '''
     vectorizer = CountVectorizer(analyzer='word', ngram_range=(n, n))
     ngramas = vectorizer.fit_transform([tokens1, tokens2])
     # print(f"Corpus {n}grama: {vectorizer.get_feature_names_out()}")
@@ -54,56 +75,56 @@ def vectorizacion(tokens1, tokens2, n):
     # print("------------------------------------")
     return ngramas
 
-# Cálculo de similitud por coseno
+
 def calcular_similitud(ngramas):
+    '''Cálculo de similitud por coseno
+    @param ngramas: vector con valores para similitud.
+    @return: resultado de similitud por coseno.
+    '''
     similitud = cosine_similarity(ngramas)[0, 1]
     return round(similitud * 100, 4)
 
-# Determinar si hay plagio
-def generar_reporte(archivo, similitud, similitud2, similitud3, similitud4, similitud5, similitud6):
+
+def generar_reporte(archivo, similitud):
+    '''Determinar si hay plagio
+    @param archivo: documento con el que se está comparando.
+    @param similitud: porcentaje de similitud.
+    @return: reporte de resultados de plagio.
+    '''
     plagio = False
     if similitud > 80:
         plagio = True
     else:
         plagio = False
-    return (f"{archivo}  |    {similitud}    |    {similitud2}   |    {similitud3}    |    {similitud4}    |    {similitud5}    |    {similitud6}    |    {plagio}")
+    return (f"{archivo}  |        {similitud}         | {plagio}")
+
 
 def main():
     # Lectura del texto a comprobar su plagio
     parrafo_plagio = lectura("textoprueba.txt")
-    #limpieza de texto
+    # Limpieza de texto
     plagio_limpio = limpieza(parrafo_plagio)
-    #preprocesamiento de texto
-    plagio_stemmed = stemming(plagio_limpio)
+    # Preprocesamiento de texto
     plagio_lemmatized = lematizacion(plagio_limpio)
-
-    # Lectura y preprocesamiento de todos los textos originales para comparar con el texto a comprobar
+    # Obtener todos los archivos con los cuales comparar
     lista_textos = os.listdir("originales")
-
-    print(f'Texto       |  1grama stem  |  2grama stem  |  3grama stem  |  1grama lemm  |  2grama lemm  |  3grama lemm  |  Plagio')
+    print("")
+    print(f'Texto       |  % Unigrama lematizado | Plagio')
 
     for texto in lista_textos:
         parrafo_original = lectura(f"originales/{texto}")
         original_limpio = limpieza(parrafo_original)
-        original_stemmed = stemming(original_limpio)
         original_lemmatized = lematizacion(original_limpio)
-        # Vectores
-        vector_unigrama_stemmed = vectorizacion(plagio_stemmed, original_stemmed, 1)
-        vector_bigrama_stemmed = vectorizacion(plagio_stemmed, original_stemmed, 2)
-        vector_trigrama_stemmed = vectorizacion(plagio_stemmed, original_stemmed, 3)
-        vector_unigrama_lemmatized = vectorizacion(plagio_lemmatized, original_lemmatized, 1)
-        vector_bigrama_lemmatized = vectorizacion(plagio_lemmatized, original_lemmatized, 2)
-        vector_trigrama_lemmatized = vectorizacion(plagio_lemmatized, original_lemmatized, 3)
-        # Similitudes
-        similitud_unigrama_stemmed = calcular_similitud(vector_unigrama_stemmed)
-        similitud_bigrama_stemmed = calcular_similitud(vector_bigrama_stemmed)
-        similitud_trigrama_stemmed = calcular_similitud(vector_trigrama_stemmed)
-        similitud_unigrama_lemmatized = calcular_similitud(vector_unigrama_lemmatized)
-        similitud_bigrama_lemmatized = calcular_similitud(vector_bigrama_lemmatized)
-        similitud_trigrama_lemmatized = calcular_similitud(vector_trigrama_lemmatized)
-        
-        resultados = generar_reporte(texto, similitud_unigrama_lemmatized, similitud_bigrama_lemmatized, similitud_trigrama_lemmatized, similitud_unigrama_stemmed, similitud_bigrama_stemmed, similitud_trigrama_stemmed)
+        # Vector con corpus unigrama
+        vector_unigrama_lemmatized = \
+            vectorizacion(plagio_lemmatized, original_lemmatized, 1)
+        # Similitud por coseno
+        similitud_unigrama_lemmatized = \
+            calcular_similitud(vector_unigrama_lemmatized)
+        # Determinación de plagio
+        resultados = generar_reporte(texto, similitud_unigrama_lemmatized)
         print(resultados)
+
 
 if __name__ == '__main__':
     main()
