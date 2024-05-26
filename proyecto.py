@@ -99,10 +99,6 @@ def generar_reporte(archivo, similitud):
 
 
 def main():
-    ejemplo = vectorizacion("La lluvia estaba tan fuerte que volvimos","Es mejor estar en casa y ver unas películas", 1)
-    matriz_densa = ejemplo.toarray()
-    cadena_formateada = "\n".join(" ".join(map(str, fila)) for fila in matriz_densa)
-    print(cadena_formateada)
     # Lectura del texto a comprobar su plagio
     parrafo_plagio = lectura("textoprueba.txt")
     # Limpieza de texto
