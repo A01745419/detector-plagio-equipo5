@@ -8,26 +8,23 @@ class TestStemming(TestCase):
     def setUp(self):
         self.pc = PlagiarismChecker()
 
-    def test_stemming(self):
-        texto = 'This is a test for the plagiarism checker.'
-        texto_limpio = self.pc.limpieza(texto)
+    def test_stemming_variaciones_sufijos(self):
+        texto_limpio = 'amare amoroso amante amorío'
         texto_stemming = self.pc.stemming(texto_limpio)
         self.assertEqual(
             texto_stemming,
-            'thi is a test for the plagiar checker')
+            'amar amor amant amori')
 
-    def test_stemming_with_2_sentences(self):
-        texto = 'This is a test for the plagiarism checker. This is a second sentence.'
-        texto_limpio = self.pc.limpieza(texto)
+    def test_stemming_tiempos_verbales(self):
+        texto_limpio = 'compre comprando compraban compraré'
         texto_stemming = self.pc.stemming(texto_limpio)
         self.assertEqual(
             texto_stemming,
-            'thi is a test for the plagiar checker thi is a second sentenc')
+            'compr compr compr compr')
 
-    def test_stemming_with_3_sentences(self):
-        texto = 'This is a test for the plagiarism checker. This is a second sentence.\n This is a third sentence.'
-        texto_limpio = self.pc.limpieza(texto)
+    def test_stemming_plural(self):
+        texto_limpio = 'muchas personas inteligentes'
         texto_stemming = self.pc.stemming(texto_limpio)
         self.assertEqual(
             texto_stemming,
-            'thi is a test for the plagiar checker thi is a second sentenc thi is a third sentenc')
+            'much person inteligent')

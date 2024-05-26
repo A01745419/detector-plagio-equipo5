@@ -1,1 +1,1 @@
-This is a test for the plagiarism checker.
+Este es un ejemplo de un archivo txt. Incluye acentos y símbolos especiales $.

@@ -8,9 +8,9 @@ class TestCleanParagraph(TestCase):
     def setUp(self):
         self.pc = PlagiarismChecker()
 
-    def test_clean_paragraph(self):
-        texto = 'This is a test for the plagiarism checker.\n'
+    def test_limpiar_parrafo(self):
+        texto = 'La historia de, Batman es/ buena. Tiene #buenos cómics.'
         texto_limpio = self.pc.limpieza(texto)
         self.assertEqual(
             texto_limpio,
-            'This is a test for the plagiarism checker\n')
+            'La historia de Batman es buena Tiene buenos cómics')

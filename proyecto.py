@@ -4,7 +4,7 @@
 # Creado 21/05/2024
 import nltk
 from nltk.tokenize import word_tokenize
-from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import re
@@ -15,7 +15,6 @@ import os
 # Igualmente correr en terminal: python -m spacy download es_core_news_sm
 
 nltk.download('punkt')
-nltk.download('wordnet')
 nltk.download('omw-1.4')
 # Cargar modelo en español para lematización (wordnet solo funciona con inglés)
 nlp = spacy.load("es_core_news_sm")
@@ -44,9 +43,9 @@ def stemming(oraciones):
     @param oraciones: oraciones de párrafo limpio.
     @return: palabras con procesadas con stemming.
     '''
-    ps = PorterStemmer()
+    ss = SnowballStemmer("spanish")
     palabras = word_tokenize(oraciones)
-    stemmed_tokens = [ps.stem(palabra) for palabra in palabras]
+    stemmed_tokens = [ss.stem(palabra) for palabra in palabras]
     return ' '.join(stemmed_tokens)
 
 

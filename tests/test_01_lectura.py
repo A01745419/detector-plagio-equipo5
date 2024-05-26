@@ -8,8 +8,8 @@ class TestReadArchive(TestCase):
     def setUp(self):
         self.pc = PlagiarismChecker()
 
-    def test_read_archive(self):
+    def test_leer_archivo(self):
         info = self.pc.lectura('tests/tests.txt')
         self.assertEqual(
             info,
-            'This is a test for the plagiarism checker.\n')
+            'Este es un ejemplo de un archivo txt. Incluye acentos y símbolos especiales $.')
