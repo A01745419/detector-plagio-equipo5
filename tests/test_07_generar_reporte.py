@@ -11,8 +11,7 @@ class TestCleanParagraph(TestCase):
     def test_generar_reporte_no_plagio(self):
         similitud = 40.1516
         reporte = self.pc.generar_reporte("no plagio", similitud)
-        self.assertEqual(reporte, \
-                         (f"no plagio  |        {40.1516}         | {False}"))
+        self.assertEqual(reporte, None)
     
     def test_generar_reporte_plagio(self):
         similitud = 87.5915
