@@ -90,7 +90,7 @@ class PlagiarismChecker:
         @return: reporte de resultados de plagio.
         '''
         plagio = False
-        if similitud > 80:
+        if similitud > 59:
             plagio = True
         else:
             plagio = False

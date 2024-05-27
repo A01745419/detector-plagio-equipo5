@@ -8,7 +8,7 @@ lista_textos_sospechoso = os.listdir("sospechosos")
 PlagiarismChecker = PlagiarismChecker()
 
 #Lectura del texto a comprobar su plagio
-parrafo_plagio = PlagiarismChecker.lectura(f"sospechosos/{lista_textos_sospechoso[0]}")
+parrafo_plagio = PlagiarismChecker.lectura(f"sospechosos/{lista_textos_sospechoso[12]}")
 
 #Limpieza de texto
 plagio_limpio = PlagiarismChecker.limpieza(parrafo_plagio)
@@ -18,6 +18,7 @@ plagio_lemmatized = PlagiarismChecker.lematizacion(plagio_limpio)
 
 #Obtener todos los archivos con los cuales comparar
 print("")
+print(f'Texto a comparar: {lista_textos_sospechoso[0]}')
 print(f'   Texto    |  % Unigrama lematizado | Plagio')
 
 for texto in lista_textos_originales:
