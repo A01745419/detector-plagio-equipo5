@@ -1,11 +1,14 @@
 from PlagiarismChecker import PlagiarismChecker
 import os
 
+lista_textos_originales = os.listdir("originales")
+lista_textos_sospechoso = os.listdir("sospechosos")
+
 #Instancia de la clase PlagiarismChecker
 PlagiarismChecker = PlagiarismChecker()
 
 #Lectura del texto a comprobar su plagio
-parrafo_plagio = PlagiarismChecker.lectura("textoprueba.txt")
+parrafo_plagio = PlagiarismChecker.lectura(lista_textos_sospechoso[0])
 
 #Limpieza de texto
 plagio_limpio = PlagiarismChecker.limpieza(parrafo_plagio)
@@ -14,11 +17,11 @@ plagio_limpio = PlagiarismChecker.limpieza(parrafo_plagio)
 plagio_lemmatized = PlagiarismChecker.lematizacion(plagio_limpio)
 
 #Obtener todos los archivos con los cuales comparar
-lista_textos = os.listdir("originales")
 print("")
 print(f'   Texto    |  % Unigrama lematizado | Plagio')
 
-for texto in lista_textos:
+for texto in lista_textos_originales:
+
     parrafo_original = PlagiarismChecker.lectura(f"originales/{texto}")
     original_limpio = PlagiarismChecker.limpieza(parrafo_original)
     original_lemmatized = PlagiarismChecker.lematizacion(original_limpio)
