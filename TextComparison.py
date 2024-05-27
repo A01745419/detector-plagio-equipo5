@@ -8,7 +8,7 @@ lista_textos_sospechoso = os.listdir("sospechosos")
 PlagiarismChecker = PlagiarismChecker()
 
 #Lectura del texto a comprobar su plagio
-parrafo_plagio = PlagiarismChecker.lectura(lista_textos_sospechoso[0])
+parrafo_plagio = PlagiarismChecker.lectura(f"sospechosos/{lista_textos_sospechoso[0]}")
 
 #Limpieza de texto
 plagio_limpio = PlagiarismChecker.limpieza(parrafo_plagio)
