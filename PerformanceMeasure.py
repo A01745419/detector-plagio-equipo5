@@ -26,15 +26,13 @@ def comparar_textos(plagio_lemmatized):
         resultados.append(PlagiarismChecker.generar_reporte(texto, similitud_unigrama_lemmatized))
         resultados_ordenados = sorted(resultados, key=lambda x: x[1], reverse=True)
 
-    print(f'{resultados_ordenados[0][0]} |        {resultados_ordenados[0][1]}%        |  {resultados_ordenados[0][2]}')
-    print(f'{resultados_ordenados[1][0]} |        {resultados_ordenados[1][1]}%        |  {resultados_ordenados[1][2]}')
     return resultados_ordenados[0][2], resultados_ordenados[1][2]
 
 def evaluar_sospechosos():
-        tp_count = 0
-        tn_count = 0
-        fp_count = 0
-        fn_count = 0
+        tp_cont = 0
+        tn_cont = 0
+        fp_cont = 0
+        fn_cont = 0
 
         carpeta_sospechosos = os.listdir("sospechosos")
 
@@ -46,47 +44,35 @@ def evaluar_sospechosos():
             for es_plagio in tabla:
                 if es_tp:
                     if es_plagio:
-                        tp_count += 1
+                        tp_cont += 1
                     else:
-                        fn_count += 1
+                        fn_cont += 1
                 else:
                     if es_plagio:
-                        fp_count += 1
+                        fp_cont += 1
                     else:
-                        tn_count += 1
+                        tn_cont += 1
 
-        resultados = {
-            'True Positive': tp_count,
-            'True Negative': tn_count,
-            'False Positive': fp_count,
-            'False Negative': fn_count
-        }
-
-        print(resultados)
-
-        if (tp_count + fn_count) == 0:
+        if (tp_cont + fn_cont) == 0:
             tpr = 0
         else:
-            tpr = tp_count / (tp_count + fn_count)
+            tpr = tp_cont / (tp_cont + fn_cont)
     
-        if (fp_count + tn_count) == 0:
-         fpr = 0
+        if (fp_cont + tn_cont) == 0:
+            fpr = 0
         else:
-            fpr = fp_count / (fp_count + tn_count)
-    
-        auc = (1 + tpr - fpr)/2
+            fpr = fp_cont / (fp_cont + tn_cont)
 
-        print (f'AUC: {auc}')
+        resultados = {
+            'Verdaderos Positivos': tp_cont,
+            'Verdaderos Negativos': tn_cont,
+            'Falsos Positivos': fp_cont,
+            'Falsos Negativos': fn_cont
+        }
 
-        return auc
+        auc = (1 + tpr - fpr) / 2
 
-# print(f'   Texto    |  % Unigrama lematizado | Plagio')
-# for texto_sospechoso in lista_textos_sospechoso:
-#     plagio_lemmatized = lectura_y_preprocesamiento_texto(f"sospechosos/{texto_sospechoso}")
-#     print(f'Texto a comparar: {texto_sospechoso}')
-#     tabla = comparar_textos(plagio_lemmatized)
-#     for i in tabla:
-#         print(i)
+        print(f'Resultados: {resultados}')
+        print (f'AUC: {round(auc, 4)}')
 
-# is_tp = 'TP' in os.path.basename("FID-001-TP.txt")
-# print(is_tp)
+evaluar_sospechosos()
