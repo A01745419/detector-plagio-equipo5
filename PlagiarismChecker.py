@@ -1,7 +1,7 @@
 # José Luis Madrigal Sánchez A01745419
 # Paulo Ogando Gulías A01751587
 # César Emiliano Palome Luna A01746493
-# Creado 21/05/2024
+# Creado 24/05/2024
 
 # Se requieren librerias nltk, sklearn, re, spacy
 # Instalar con 'pip install nombre'
@@ -14,12 +14,13 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import re
 import spacy
-import os
 
 
 nltk.download('punkt')
 nltk.download('omw-1.4')
-nlp = spacy.load("es_core_news_sm") # Cargar modelo en español para lematización (wordnet solo funciona con inglés)
+# Cargar modelo en español para lematización (wordnet solo funciona con inglés)
+nlp = spacy.load("es_core_news_sm")
+
 
 class PlagiarismChecker:
     def __init__(self):
@@ -33,14 +34,14 @@ class PlagiarismChecker:
         with open(nombre_archivo, encoding="utf-8") as archivo:
             info = archivo.read()
         return info
-    
+
     def limpieza(self, texto):
         '''Remover puntuación de párrafo.
         @param texto: párrafo a limpiar.
         @return: párrafo sin puntuacion.
         '''
         return re.sub(r'[^\w\s]', '', texto)
-    
+
     def stemming(self, oraciones):
         '''Utilización de Stemming para preprocesamiento
         @param oraciones: oraciones de párrafo limpio.
@@ -50,7 +51,7 @@ class PlagiarismChecker:
         palabras = word_tokenize(oraciones)
         stemmed_tokens = [ss.stem(palabra) for palabra in palabras]
         return ' '.join(stemmed_tokens)
-    
+
     def lematizacion(self, oraciones):
         '''Utilización de lematización para preprocesamiento
         @param oraciones: oraciones de párrafo limpio.
@@ -59,7 +60,7 @@ class PlagiarismChecker:
         palabras = nlp(oraciones)
         lematized_tokens = [palabra.lemma_ for palabra in palabras]
         return ' '.join(lematized_tokens)
-    
+
     def vectorizacion(self, tokens1, tokens2, n):
         '''Obtención de vectores por medio de tokenización.
         @param tokens1: palabras procesadas del primer párrafo.
@@ -74,7 +75,7 @@ class PlagiarismChecker:
         # print(f"Vector {n}grama: {ngrams.toarray()}")
         # print("------------------------------------")
         return ngramas
-    
+
     def calcular_similitud(self, ngramas):
         '''Cálculo de similitud por coseno
         @param ngramas: vector con valores para similitud.
@@ -82,7 +83,7 @@ class PlagiarismChecker:
         '''
         similitud = cosine_similarity(ngramas)[0, 1]
         return round(similitud * 100, 4)
-    
+
     def generar_reporte(self, archivo, similitud):
         '''Determinar si hay plagio
         @param archivo: documento con el que se está comparando.
