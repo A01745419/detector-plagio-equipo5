@@ -92,7 +92,7 @@ class PlagiarismChecker:
         plagio = False
         if similitud > 59:
             plagio = True
-            return (f"{archivo}  |        {similitud}         | {plagio}")
+            return [archivo, similitud, plagio]
         else:
             plagio = False
-            return None
+            return [archivo, similitud, plagio]

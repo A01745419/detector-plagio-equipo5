@@ -18,13 +18,16 @@ def lectura_y_preprocesamiento_texto(texto):
     return plagio_lemmatized
 
 def comparar_textos(plagio_lemmatized):
+    resultados = []
     for texto in lista_textos_originales:
         original_lemmatized = lectura_y_preprocesamiento_texto(f"originales/{texto}")
         vector_unigrama_lemmatized = PlagiarismChecker.vectorizacion(plagio_lemmatized, original_lemmatized, 1)
         similitud_unigrama_lemmatized = PlagiarismChecker.calcular_similitud(vector_unigrama_lemmatized)
-        resultados = PlagiarismChecker.generar_reporte(texto, similitud_unigrama_lemmatized)
-        if resultados != None:
-            print(resultados)
+        resultados.append(PlagiarismChecker.generar_reporte(texto, similitud_unigrama_lemmatized))
+        resultados_ordenados = sorted(resultados, key=lambda x: x[1], reverse=True)
+        
+    print(f'{resultados_ordenados[0][0]} |        {resultados_ordenados[0][1]}%        |  {resultados_ordenados[0][2]}')
+    print(f'{resultados_ordenados[1][0]} |        {resultados_ordenados[1][1]}%        |  {resultados_ordenados[1][2]}')
 
 print("Elija una opción para comparar:")
 print("1. Comparar 1 texto sospechoso con todos los textos originales")
