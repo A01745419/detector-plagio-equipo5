@@ -50,12 +50,16 @@ def comparar_textos(plagio_lemmatized):
                                       key=lambda x: x[1], reverse=True)
 
     # Mostrar los 2 archvios con mayor similitud
-    print(f'{resultados_ordenados[0][0]} |\
-        {resultados_ordenados[0][1]}%        |\
-        {resultados_ordenados[0][2]}')
-    print(f'{resultados_ordenados[1][0]} |\
-        {resultados_ordenados[1][1]}%        |\
-        {resultados_ordenados[1][2]}')
+    # si existen archivos plagiados
+    if resultados_ordenados[0][2] == False:
+        print('               Este texto es genuino')
+    else:
+        print(f'{resultados_ordenados[0][0]} |\
+            {resultados_ordenados[0][1]}%        |\
+            {resultados_ordenados[0][2]}')
+        print(f'{resultados_ordenados[1][0]} |\
+            {resultados_ordenados[1][1]}%        |\
+            {resultados_ordenados[1][2]}')
 
 
 print("Elija una opción para comparar:")
