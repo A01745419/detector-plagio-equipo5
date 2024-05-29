@@ -75,7 +75,9 @@ def evaluar_sospechosos():
         # Guardar valores para graficar
         tabla1 = (tabla[0], tabla[1])
         tabla2 = (tabla[2], tabla[3])
+        # Guardar porcentajes
         y_scores.append(tabla2[0])
+        # Guardar presencia de true positives
         y_true.append(1 if es_tp else 0)
 
         for es_plagio in tabla1:
