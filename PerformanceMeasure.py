@@ -114,18 +114,29 @@ def evaluar_sospechosos():
     print(f'Resultados: {resultados}')
     print(f'AUC: {round(area_bajo_curva, 4)}')
     # Graficar la curva roc
-    fpr, tpr, _ = roc_curve(y_true, y_scores)
-    roc_auc = auc(fpr, tpr)
-    plt.figure()
-    plt.plot(fpr, tpr, color='darkorange', lw=2,
-             label=f'Curva ROC (ROC_AUC = {roc_auc:.2f})')
-    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.05])
+    # Lista de umbrales
+    umbrales = [30, 40, 50, 60]
+
+    # Calcular la curva ROC y el AUC para cada umbral
+    for umbral in umbrales:
+        # Generar predicciones binarias para el umbral actual
+        y_pred = [1 if score >= umbral else 0 for score in y_scores]
+        # Calcular la curva ROC
+        fpr, tpr, _ = roc_curve(y_true, y_pred)
+        # Calcular el AUC
+        roc_auc = auc(fpr, tpr)
+        # Imprimir el AUC para el umbral actual
+        print(f"Umbral: {umbral}, AUC: {roc_auc}")
+        # Graficar la curva ROC para el umbral actual
+        plt.plot(fpr, tpr, label=f'Umbral {umbral} (AUC = {roc_auc:.2f})')
+
+    # Configuración de la gráfica
+    plt.plot([0, 1], [0, 1], linestyle='--',
+             color='grey', label='Clasificador aleatorio')
     plt.xlabel('Tasa de Falsos Positivos')
     plt.ylabel('Tasa de Verdaderos Positivos')
-    plt.title('Curva ROC')
-    plt.legend(loc="lower right")
+    plt.title('Curva ROC para diferentes umbrales')
+    plt.legend()
     plt.show()
 
 
