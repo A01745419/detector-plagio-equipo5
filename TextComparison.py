@@ -51,7 +51,7 @@ def comparar_textos(plagio_lemmatized):
 
     # Mostrar los 2 archvios con mayor similitud
     # si existen archivos plagiados
-    if resultados_ordenados[0][2] == False:
+    if resultados_ordenados[0][2] is False:
         print('               Este texto es genuino')
     else:
         print(f'{resultados_ordenados[0][0]} |\
