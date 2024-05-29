@@ -70,10 +70,6 @@ class PlagiarismChecker:
         '''
         vectorizer = CountVectorizer(analyzer='word', ngram_range=(n, n))
         ngramas = vectorizer.fit_transform([tokens1, tokens2])
-        # print(f"Corpus {n}grama: {vectorizer.get_feature_names_out()}")
-        # print("------------------------------------")
-        # print(f"Vector {n}grama: {ngrams.toarray()}")
-        # print("------------------------------------")
         return ngramas
 
     def calcular_similitud(self, ngramas):

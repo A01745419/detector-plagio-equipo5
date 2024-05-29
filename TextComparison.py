@@ -25,7 +25,6 @@ def lectura_y_preprocesamiento_texto(texto):
     plagio_limpio = PlagiarismChecker.limpieza(parrafo_plagio)
     # Preprocesamiento de texto
     plagio_lemmatized = PlagiarismChecker.lematizacion(plagio_limpio)
-
     return plagio_lemmatized
 
 
