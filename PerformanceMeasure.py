@@ -4,6 +4,8 @@
 # Creado 28/05/2024
 from PlagiarismChecker import PlagiarismChecker
 import os
+import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve, auc
 
 # Archivos dentro de las carpetas
 lista_textos_originales = os.listdir("originales")
@@ -48,7 +50,8 @@ def comparar_textos(plagio_lemmatized):
         resultados_ordenados = sorted(
             resultados, key=lambda x: x[1], reverse=True)
 
-    return resultados_ordenados[0][2], resultados_ordenados[1][2]
+    return (resultados_ordenados[0][2], resultados_ordenados[1][2],
+            resultados_ordenados[0][1], resultados_ordenados[1][1])
 
 
 def evaluar_sospechosos():
@@ -59,6 +62,9 @@ def evaluar_sospechosos():
     tn_cont = 0
     fp_cont = 0
     fn_cont = 0
+    # Valores y puntajes
+    y_true = []
+    y_scores = []
 
     for sospechoso in lista_textos_sospechoso:
         lematizado = lectura_y_preprocesamiento_texto(
@@ -66,8 +72,13 @@ def evaluar_sospechosos():
         tabla = comparar_textos(lematizado)
         # Identificar los que se saben que son true positive
         es_tp = 'TP' in os.path.basename(sospechoso)
+        # Guardar valores para graficar
+        tabla1 = (tabla[0], tabla[1])
+        tabla2 = (tabla[2], tabla[3])
+        y_scores.append(tabla2[0])
+        y_true.append(1 if es_tp else 0)
 
-        for es_plagio in tabla:
+        for es_plagio in tabla1:
             if es_tp:
                 if es_plagio:
                     tp_cont += 1
@@ -98,10 +109,24 @@ def evaluar_sospechosos():
     }
 
     # Calcular area bajo la curva
-    auc = (1 + tpr - fpr) / 2
-
+    area_bajo_curva = (1 + tpr - fpr) / 2
+    # Mostrar los cálculos
     print(f'Resultados: {resultados}')
-    print(f'AUC: {round(auc, 4)}')
+    print(f'AUC: {round(area_bajo_curva, 4)}')
+    # Graficar la curva roc
+    fpr, tpr, _ = roc_curve(y_true, y_scores)
+    roc_auc = auc(fpr, tpr)
+    plt.figure()
+    plt.plot(fpr, tpr, color='darkorange', lw=2,
+             label=f'Curva ROC (ROC_AUC = {roc_auc:.2f})')
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('Tasa de Falsos Positivos')
+    plt.ylabel('Tasa de Verdaderos Positivos')
+    plt.title('Curva ROC')
+    plt.legend(loc="lower right")
+    plt.show()
 
 
 evaluar_sospechosos()
