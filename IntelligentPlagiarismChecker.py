@@ -10,11 +10,13 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import Pipeline
+from langdetect import detect
 
 nltk.download('punkt')
 nltk.download('omw-1.4')
-# Cargar modelo en español para lematización (wordnet solo funciona con inglés)
-nlp = spacy.load("es_core_news_sm")
+# Cargar modelos en español e inglés
+nlp_es = spacy.load("es_core_news_sm")
+nlp_en = spacy.load("en_core_web_sm")
 
 class IntelligentPlagiarismChecker:
     def __init__(self):
@@ -46,6 +48,11 @@ class IntelligentPlagiarismChecker:
         @param oraciones: oraciones de párrafo limpio.
         @return: palabras lematizadas.
         '''
+        idioma = detect(oraciones)
+        if idioma == 'es':
+            nlp = nlp_es
+        elif idioma == 'en':
+            nlp = nlp_en
         palabras = nlp(oraciones)
         lematized_tokens = [palabra.lemma_ for palabra in palabras]
         return ' '.join(lematized_tokens)
