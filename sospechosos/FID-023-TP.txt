@@ -1,0 +1,6 @@
+While research on Artificial Intelligence in Education (AIED) fundamentally aims to support student learning, experiences from other AI domains indicate that ethical intentions alone are insufficient. It is crucial to explicitly address issues such as fairness, accountability, transparency, bias, autonomy, agency, and inclusion. More broadly, there is a need to differentiate between doing ethical things and doing things ethically, to understand and make pedagogical choices that are ethical, and to consider the ever-present possibility of unintended consequences. Addressing these and related questions is complex and challenging. To begin bridging this critical gap, we invited 60 leading researchers from the AIED community to respond to a survey on ethics and the application of AI in educational contexts. In this paper, we first introduce the ethical issues related to AI in education. We then summarize the contributions of the 17 respondents and discuss the complex issues they raised. Key outcomes include the recognition that most AIED researchers are not equipped to address emerging ethical questions. A well-designed framework for engaging with the ethics of AIED, combining a multidisciplinary approach and a set of robust guidelines, is essential in this context.
+
+
+
+
+
