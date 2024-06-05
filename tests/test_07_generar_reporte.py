@@ -1,12 +1,12 @@
 # File: tests/test_07_generar_reporte.py
 
 from unittest import TestCase
-from PlagiarismChecker import PlagiarismChecker
+from PlagiarismChecker import IntelligentPlagiarismChecker
 
 class TestCleanParagraph(TestCase):
 
     def setUp(self):
-        self.pc = PlagiarismChecker()
+        self.pc = IntelligentPlagiarismChecker()
 
     def test_generar_reporte_no_plagio(self):
         similitud = 40.1516

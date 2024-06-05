@@ -1,12 +1,12 @@
 # File: tests/test_06_calcular_similitud.py
 
 from unittest import TestCase
-from PlagiarismChecker import PlagiarismChecker
+from PlagiarismChecker import IntelligentPlagiarismChecker
 
 class TestCleanParagraph(TestCase):
 
     def setUp(self):
-        self.pc = PlagiarismChecker()
+        self.pc = IntelligentPlagiarismChecker()
 
     def test_calcular_similitud(self):
         tokens1 = "el lluvia estar tanto fuerte que volver"

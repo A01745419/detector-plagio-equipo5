@@ -2,7 +2,7 @@
 # Paulo Ogando Gulías A01751587
 # César Emiliano Palome Luna A01746493
 # Creado 28/05/2024
-from PlagiarismChecker import PlagiarismChecker
+from PlagiarismChecker import IntelligentPlagiarismChecker
 import os
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc
@@ -12,7 +12,7 @@ lista_textos_originales = os.listdir("originales")
 lista_textos_sospechoso = os.listdir("sospechosos")
 
 # Instancia de la clase PlagiarismChecker
-PlagiarismChecker = PlagiarismChecker()
+PlagiarismChecker = IntelligentPlagiarismChecker()
 
 
 def lectura_y_preprocesamiento_texto(texto):
