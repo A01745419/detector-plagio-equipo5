@@ -87,14 +87,16 @@ elif opcion == 2:
     for i in range(len(lista_textos_sospechoso)):
         print(f"{i+1}. {lista_textos_sospechoso[i]}")
     print("")
-    texto_sospechoso = int(input("Elija el numero del texto sospechoso: "))
+    textos_sospechosos = input("Elija los numeros de los textos sospechosos separados por coma: ")
+    textos_sospechosos = textos_sospechosos.split(",")
     print("")
-    print(f'Texto a comparar: {lista_textos_sospechoso[texto_sospechoso-1]}')
     print(f'   Texto    |  % Unigrama lematizado |       Plagio       |  Tipo de Plagio' )
-    for texto_sospechoso in lista_textos_sospechoso:
+    for texto_sospechoso in textos_sospechosos:
         plagio_lemmatized = lectura_y_preprocesamiento_texto(
-            f"sospechosos/{texto_sospechoso}")
-        print(f'{texto_sospechoso}')
+            f"sospechosos/{lista_textos_sospechoso[int(texto_sospechoso)-1]}")
+        print(
+            f'Texto a comparar: \
+                {lista_textos_sospechoso[int(texto_sospechoso)-1]}')
         tabla = comparar_textos(plagio_lemmatized)
 
 # Comparar todos los textos
