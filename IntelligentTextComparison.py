@@ -34,7 +34,7 @@ def comparar_textos(plagio_lemmatized):
             lectura_y_preprocesamiento_texto(f"originales/{texto}")
         vector_unigrama_lemmatized = \
             IntelligentPlagiarismChecker.vectorizacion(plagio_lemmatized,
-                                            original_lemmatized, 1)
+                                            original_lemmatized, 3)
         similitud_unigrama_lemmatized = \
             IntelligentPlagiarismChecker.calcular_similitud(
                 vector_unigrama_lemmatized)
