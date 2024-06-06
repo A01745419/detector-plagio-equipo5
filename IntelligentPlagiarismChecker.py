@@ -124,7 +124,7 @@ class IntelligentPlagiarismChecker:
         
         # Ajuste de hiperparámetros
         param_grid = {
-            'tfidf__ngram_range': [(1, 1), (1, 2), (1, 3)],
+            'tfidf__ngram_range': [(1, 7), (1, 8), (1, 9)],
             'clf__n_estimators': [100, 200, 300],
             'clf__max_depth': [None, 10, 20, 30],
             'clf__min_samples_split': [2, 5, 10]
