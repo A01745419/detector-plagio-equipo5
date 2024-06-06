@@ -1,3 +1,7 @@
+# José Luis Madrigal Sánchez A01745419
+# Paulo Ogando Gulías A01751587
+# César Emiliano Palome Luna A01746493
+# Creado 05/06/2024
 from IntelligentPlagiarismChecker import IntelligentPlagiarismChecker
 import os
 
@@ -19,7 +23,8 @@ def lectura_y_preprocesamiento_texto(texto):
     # Limpieza de texto
     plagio_limpio = IntelligentPlagiarismChecker.limpieza(parrafo_plagio)
     # Preprocesamiento de texto
-    plagio_lemmatized = IntelligentPlagiarismChecker.lematizacion(plagio_limpio)
+    plagio_lemmatized = \
+        IntelligentPlagiarismChecker.lematizacion(plagio_limpio)
     return plagio_lemmatized
 
 
@@ -28,13 +33,14 @@ def comparar_textos(plagio_lemmatized):
     @param plagio_lemmatized: texto lematizado.
     '''
     resultados = []
-    tipo_plagio = IntelligentPlagiarismChecker.predecir_tipo_plagio(plagio_lemmatized)
+    tipo_plagio = \
+        IntelligentPlagiarismChecker.predecir_tipo_plagio(plagio_lemmatized)
     for texto in lista_textos_originales:
         original_lemmatized = \
             lectura_y_preprocesamiento_texto(f"originales/{texto}")
         vector_unigrama_lemmatized = \
             IntelligentPlagiarismChecker.vectorizacion(plagio_lemmatized,
-                                            original_lemmatized, 2)
+                                                       original_lemmatized, 2)
         similitud_unigrama_lemmatized = \
             IntelligentPlagiarismChecker.calcular_similitud(
                 vector_unigrama_lemmatized)
@@ -49,6 +55,7 @@ def comparar_textos(plagio_lemmatized):
     # si existen archivos plagiados
     if resultados_ordenados[0][2] is False:
         print('               Este texto es genuino')
+        print("")
     else:
         print(f'{resultados_ordenados[0][0]} |\
         {resultados_ordenados[0][1]}%        |\
@@ -58,6 +65,7 @@ def comparar_textos(plagio_lemmatized):
         {resultados_ordenados[1][1]}%        |\
         {resultados_ordenados[1][2]}         |\
         {resultados_ordenados[1][3]}')
+        print("")
 
 
 print("Elija una opción para comparar:")
@@ -78,7 +86,10 @@ if opcion == 1:
         f"sospechosos/{lista_textos_sospechoso[texto_sospechoso-1]}")
     print("")
     print(f'Texto a comparar: {lista_textos_sospechoso[texto_sospechoso-1]}')
-    print(f'   Texto    |  % Unigrama lematizado |       Plagio       |  Tipo de Plagio' )
+    print(
+        f'   Texto    |  % Unigrama lematizado |       Plagio       '
+        f'|  Tipo de Plagio'
+    )
     tabla = comparar_textos(plagio_lemmatized)
 
 # Elegir un grupo de textos
@@ -87,10 +98,14 @@ elif opcion == 2:
     for i in range(len(lista_textos_sospechoso)):
         print(f"{i+1}. {lista_textos_sospechoso[i]}")
     print("")
-    textos_sospechosos = input("Elija los numeros de los textos sospechosos separados por coma: ")
+    textos_sospechosos = input(
+        "Elija los numeros de los textos sospechosos separados por coma: ")
     textos_sospechosos = textos_sospechosos.split(",")
     print("")
-    print(f'   Texto    |  % Unigrama lematizado |       Plagio       |  Tipo de Plagio' )
+    print(
+        f'   Texto    |  % Unigrama lematizado |       Plagio       '
+        f'|  Tipo de Plagio'
+    )
     for texto_sospechoso in textos_sospechosos:
         plagio_lemmatized = lectura_y_preprocesamiento_texto(
             f"sospechosos/{lista_textos_sospechoso[int(texto_sospechoso)-1]}")
@@ -101,7 +116,10 @@ elif opcion == 2:
 
 # Comparar todos los textos
 elif opcion == 3:
-    print(f'   Texto    |  % Unigrama lematizado |       Plagio       |  Tipo de Plagio' )
+    print(
+        f'   Texto    |  % Unigrama lematizado |       Plagio       '
+        f'|  Tipo de Plagio'
+    )
     for texto_sospechoso in lista_textos_sospechoso:
         plagio_lemmatized = lectura_y_preprocesamiento_texto(
             f"sospechosos/{texto_sospechoso}")

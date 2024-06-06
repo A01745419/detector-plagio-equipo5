@@ -25,7 +25,8 @@ def lectura_y_preprocesamiento_texto(texto):
     # Limpieza de texto
     plagio_limpio = IntelligentPlagiarismChecker.limpieza(parrafo_plagio)
     # Preprocesamiento de texto
-    plagio_lemmatized = IntelligentPlagiarismChecker.lematizacion(plagio_limpio)
+    plagio_lemmatized = IntelligentPlagiarismChecker.lematizacion(
+        plagio_limpio)
 
     return plagio_lemmatized
 
@@ -35,13 +36,14 @@ def comparar_textos(plagio_lemmatized):
     @param plagio_lemmatized: texto lematizado.
     '''
     resultados = []
-    tipo_plagio = IntelligentPlagiarismChecker.predecir_tipo_plagio(plagio_lemmatized)
+    tipo_plagio = IntelligentPlagiarismChecker.predecir_tipo_plagio(
+        plagio_lemmatized)
     for texto in lista_textos_originales:
         original_lemmatized = \
             lectura_y_preprocesamiento_texto(f"originales/{texto}")
         vector_unigrama_lemmatized = \
             IntelligentPlagiarismChecker.vectorizacion(plagio_lemmatized,
-                                            original_lemmatized, 2)
+                                                       original_lemmatized, 2)
         similitud_unigrama_lemmatized = \
             IntelligentPlagiarismChecker.calcular_similitud(
                 vector_unigrama_lemmatized)
