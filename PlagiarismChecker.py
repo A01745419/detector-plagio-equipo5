@@ -38,7 +38,7 @@ nltk.download('omw-1.4')
 nlp = spacy.load("es_core_news_sm")
 
 
-class IntelligentPlagiarismChecker:
+class PlagiarismChecker:
 
     def __init__(self):
         pass

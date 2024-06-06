@@ -1,12 +1,12 @@
 # File: tests/test_05_vectorizacion.py
 
 from unittest import TestCase
-from PlagiarismChecker import IntelligentPlagiarismChecker
+from PlagiarismChecker import PlagiarismChecker
 
 class TestCleanParagraph(TestCase):
 
     def setUp(self):
-        self.pc = IntelligentPlagiarismChecker()
+        self.pc = PlagiarismChecker()
 
     def test_vectorizacion(self):
         tokens1 = "el lluvia estar tanto fuerte que volver"

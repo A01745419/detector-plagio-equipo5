@@ -3,7 +3,7 @@
 
 from unittest import TestCase
 
-from PlagiarismChecker import IntelligentPlagiarismChecker
+from PlagiarismChecker import PlagiarismChecker
 
 
 class TestCleanParagraph(TestCase):
@@ -11,7 +11,7 @@ class TestCleanParagraph(TestCase):
 
     def setUp(self):
 
-        self.pc = IntelligentPlagiarismChecker()
+        self.pc = PlagiarismChecker()
 
 
     def test_limpiar_parrafo(self):

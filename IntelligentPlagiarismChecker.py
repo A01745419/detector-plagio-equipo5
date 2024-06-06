@@ -97,7 +97,7 @@ class IntelligentPlagiarismChecker:
         @return: reporte de resultados de plagio.
         '''
         plagio = False
-        if similitud > 59:
+        if similitud > 40:
             plagio = True
         return [archivo, similitud, plagio, tipo_plagio]
 
@@ -139,7 +139,8 @@ class IntelligentPlagiarismChecker:
         print(classification_report(y_test, y_pred))
         print(f"Mejores parámetros: {grid_search.best_params_}")
         print(f"Precisión del modelo de clasificación de plagio: {best_model.score(X_test, y_test)}")
-        
+        print("")
+
         return best_model
 
 

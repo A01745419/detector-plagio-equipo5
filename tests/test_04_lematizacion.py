@@ -1,12 +1,12 @@
 # File: tests/test_04_lematizacion.py
 
 from unittest import TestCase
-from PlagiarismChecker import IntelligentPlagiarismChecker
+from PlagiarismChecker import PlagiarismChecker
 
 class TestLematizacion(TestCase):
 
     def setUp(self):
-        self.pc = IntelligentPlagiarismChecker()
+        self.pc = PlagiarismChecker()
 
     def test_lematizacion_articulo_verbo(self):
         texto_limpio = 'la mentira es mala'
