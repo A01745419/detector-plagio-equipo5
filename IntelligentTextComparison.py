@@ -56,6 +56,16 @@ def comparar_textos(plagio_lemmatized):
     if resultados_ordenados[0][2] is False:
         print('               Este texto es genuino')
         print("")
+    elif resultados_ordenados[0][2] is True and resultados_ordenados[1][2] is False:
+        print(f'{resultados_ordenados[0][0]} |\
+        {resultados_ordenados[0][1]}%        |\
+        {resultados_ordenados[0][2]}         |\
+        {resultados_ordenados[0][3]}')
+        print(f'{resultados_ordenados[1][0]} |\
+        {resultados_ordenados[1][1]}%        |\
+        {resultados_ordenados[1][2]}         |\
+            ----    ')
+        print("")
     else:
         print(f'{resultados_ordenados[0][0]} |\
         {resultados_ordenados[0][1]}%        |\
